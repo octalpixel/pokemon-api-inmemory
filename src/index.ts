@@ -1,6 +1,6 @@
 import { Elysia, t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
-import { staticPlugin } from '@elysiajs/static'
+import { staticPlugin } from "@elysiajs/static";
 
 import POKEMONS from "./pokemon.json";
 
@@ -148,6 +148,26 @@ app.group("/api/pokemon", (app) =>
         detail: {
           tags: ["Pokémon"],
           summary: "Refresh Pokémon data",
+        },
+      }
+    )
+    .get(
+      "/search",
+      ({ query: { name } }) => {
+        const lowercaseName = name.toLowerCase();
+        return pokemonData.filter((pokemon) =>
+          Object.values(pokemon.name).some((nameLang) =>
+            nameLang.toLowerCase().includes(lowercaseName)
+          )
+        );
+      },
+      {
+        query: t.Object({
+          name: t.String(),
+        }),
+        detail: {
+          tags: ["Pokémon"],
+          summary: "Search Pokémon by name (case-insensitive)",
         },
       }
     )
