@@ -1,6 +1,7 @@
 import { Elysia, t } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { staticPlugin } from "@elysiajs/static";
+import { cors } from "@elysiajs/cors";
 
 import POKEMONS from "./pokemon.json";
 
@@ -21,7 +22,8 @@ const app = new Elysia()
       },
     })
   )
-  .use(staticPlugin());
+  .use(staticPlugin())
+  .use(cors());
 
 const PokemonSchema = t.Object({
   id: t.Number(),
